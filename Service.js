@@ -52,4 +52,8 @@ const toggleAvail = async (req, res) => {
   );
 };
 
-module.exports = { signup, login, toggleAvail };
+const findRides = async (req, res) => {
+  console.log("Find Rides", req.body);
+};
+
+module.exports = { signup, login, toggleAvail, findRides };

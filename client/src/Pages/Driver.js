@@ -56,7 +56,7 @@ export default function Driver() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="form-group">
-        <h3>LIVE LOCATION {status}</h3>
+        <h3>Current Location {status}</h3>
         <input
           {...register("latitude")}
           className="form-control"
@@ -73,7 +73,6 @@ export default function Driver() {
           type="submit"
           className={`btn btn-${!available ? "success" : "danger"}`}
           value="Toggle Availability"
-          onClick={getLocation}
         />
       </form>
     </div>

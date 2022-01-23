@@ -16,6 +16,8 @@ app.post("/login", Service.login);
 // Driver Endpoints
 app.put("/toggleAvailability", Service.toggleAvail);
 
+// User Endpoints
+app.post("/findRides", Service.findRides);
 app.get("/SERVERTESTAPI", (req, res) => {
   res.send({ express: "SERVER RUNNING" });
 });
