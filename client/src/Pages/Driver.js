@@ -3,19 +3,40 @@ import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 
 export default function Driver() {
-  const { register, handleSubmit } = useForm();
+  const [status, setStatus] = useState(null);
+
+  const { register, handleSubmit, setValue } = useForm();
   const { state } = useLocation();
   const [available, setAvail] = useState();
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setStatus("Geolocation is not supported by your browser");
+    } else {
+      setStatus("Locating...");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setStatus(null);
+          setValue("latitude", position.coords.latitude);
+          setValue("longitude", position.coords.longitude);
+        },
+        () => {
+          setStatus("Unable to retrieve your location");
+        }
+      );
+    }
+  };
   useEffect(() => {
     setAvail(state.userData.available);
+    getLocation();
   }, []);
-  const onSubmit = async () => {
+  const onSubmit = async (data) => {
     const res = await fetch("/toggleAvailability", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         _id: state.userData._id,
         newStatus: !available,
+        currentLocation: data,
       }),
     });
     setAvail(!available);
@@ -35,10 +56,24 @@ export default function Driver() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="form-group">
+        <h3>LIVE LOCATION {status}</h3>
+        <input
+          {...register("latitude")}
+          className="form-control"
+          placeholder="Enter Latitude"
+          required
+        />
+        <input
+          {...register("longitude")}
+          className="form-control"
+          placeholder="Enter Longitude"
+          required
+        />
         <input
           type="submit"
           className={`btn btn-${!available ? "success" : "danger"}`}
           value="Toggle Availability"
+          onClick={getLocation}
         />
       </form>
     </div>

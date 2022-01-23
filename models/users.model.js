@@ -27,6 +27,9 @@ var usersSchema = new mongoose.Schema({
   available: {
     type: Boolean,
   },
+  currentLocation: {
+    type: Object,
+  },
 });
 
 mongoose.model("users", usersSchema);

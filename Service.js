@@ -39,7 +39,10 @@ const toggleAvail = async (req, res) => {
 
   users.findOneAndUpdate(
     { _id: req.body._id },
-    { available: req.body.newStatus },
+    {
+      available: req.body.newStatus,
+      currentLocation: req.body.currentLocation,
+    },
     (err, doc) => {
       if (err) res.status(500).send({ MSG: "FAILED", err: err });
       else {
