@@ -3,6 +3,9 @@ import "./App.css";
 import { useEffect } from "react";
 import { Router, Routes, Route } from "react-router-dom";
 import SignUp from "./Pages/SignUp";
+import Login from "./Pages/Login";
+import Rider from "./Pages/Rider";
+import Driver from "./Pages/Driver";
 
 function App() {
   // useEffect(async () => {
@@ -14,6 +17,9 @@ function App() {
     <div className="App">
       <Routes>
         <Route exact path="/signUp" element={<SignUp />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/driver" element={<Driver />} />
+        <Route exact path="/rider" element={<Rider />} />
       </Routes>
     </div>
   );

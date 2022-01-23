@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.post("/signUp", Service.signup);
+app.post("/login", Service.login);
 
 app.get("/SERVERTESTAPI", (req, res) => {
   res.send({ express: "SERVER RUNNING" });

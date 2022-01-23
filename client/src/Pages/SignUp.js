@@ -13,31 +13,41 @@ export default function SignUp() {
     });
     const datares = await res.json();
     if (res.ok) {
-      navigate("/");
+      navigate("/login");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form-group">
-      <input
-        {...register("email")}
-        className="form-control"
-        placeholder="Enter email"
-        type={"email"}
-        required
-      />
-      <input
-        {...register("passWord")}
-        className="form-control"
-        placeholder="Enter Password"
-        type={"password"}
-        required
-      />
-      <select {...register("mode")} className="form-control">
-        <option value="rider">Rider</option>
-        <option value="Driver">Driver</option>
-      </select>
-      <input type="submit" className="btn btn-primary" />
-    </form>
+    <div className="signUp">
+      <h1>SIGNUP</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="form-group">
+        <input
+          {...register("email")}
+          className="form-control"
+          placeholder="Enter email"
+          type={"email"}
+          required
+        />
+        <input
+          {...register("phone")}
+          className="form-control"
+          placeholder="Enter Phone Number"
+          type={"number"}
+          required
+        />
+        <input
+          {...register("passWord")}
+          className="form-control"
+          placeholder="Enter Password"
+          type={"password"}
+          required
+        />
+        <select {...register("mode")} className="form-control">
+          <option value="rider">Rider</option>
+          <option value="Driver">Driver</option>
+        </select>
+        <input type="submit" className="btn btn-primary" />
+      </form>
+    </div>
   );
 }

@@ -5,12 +5,32 @@ const signup = async (req, res) => {
   console.log("SIGNUP", req.body);
   var user = new users();
   user.email = req.body.email;
-  user.password = req.body.passWord;
+  user.passWord = req.body.passWord;
   user.mode = req.body.mode;
+  user.phone = req.body.phone;
+  if (user.mode === "Driver") {
+    user.available = false;
+  }
+
   user.save((err, doc) => {
-    if (err) res.send({ MSG: "FAILED" });
+    if (err) res.status(500).send({ MSG: "FAILED" });
     else res.send({ MSG: "SUCCESS" });
   });
 };
 
-module.exports = { signup };
+const login = async (req, res) => {
+  console.log("LOGIN", req.body);
+  let email = req.body.email;
+  let passWord = req.body.passWord;
+
+  users.find({ email, passWord }, { passWord: 0 }, (err, doc) => {
+    if (err) res.status(500).send({ MSG: "FAILED", err: err });
+    else {
+      if (doc.length > 0) {
+        res.send({ MSG: "SUCCESS", userDetails: doc });
+      } else res.status(404).send({ MSG: "Usr Not found / Invalid" });
+    }
+  });
+};
+
+module.exports = { signup, login };

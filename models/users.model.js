@@ -4,11 +4,17 @@ var usersSchema = new mongoose.Schema({
   email: {
     type: String,
   },
+  phone: {
+    type: String,
+  },
   passWord: {
     type: String,
   },
   mode: {
     type: String,
+  },
+  available: {
+    type: Boolean,
   },
 });
 
