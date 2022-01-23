@@ -6,7 +6,8 @@ export default function Rider() {
   const [status, setStatus] = useState(null);
   const { register, handleSubmit, setValue } = useForm();
   const { state } = useLocation();
-
+  const [ride, setRide] = useState(false);
+  const [driver, setDriver] = useState({});
   const getLocation = () => {
     if (!navigator.geolocation) {
       setStatus("Geolocation is not supported by your browser");
@@ -37,6 +38,12 @@ export default function Rider() {
         destination: data.destination,
       }),
     });
+
+    const resJSON = await res.json();
+    if (res.ok) {
+      setRide(true);
+      setDriver(resJSON.userDetails);
+    }
   };
   return (
     <div className="Driver">
@@ -48,30 +55,49 @@ export default function Rider() {
           <li className="list-group-item">Email - {state.userData.email}</li>
         </ul>
       </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="form-group">
-        <h3>Current Location {status}</h3>
-        <input
-          {...register("latitude")}
-          className="form-control"
-          placeholder="Enter Latitude"
-          required
-        />
-        <input
-          {...register("longitude")}
-          className="form-control"
-          placeholder="Enter Longitude"
-          required
-        />
-        <h3>Destination Address</h3>
-        <input
-          {...register("destination")}
-          className="form-control"
-          placeholder="Enter Destination"
-          required
-        />
-        <input type="submit" className={`btn btn-success`} value="Find Ride" />
-      </form>
+      {!ride ? (
+        <form onSubmit={handleSubmit(onSubmit)} className="form-group">
+          <h3>Current Location {status}</h3>
+          <input
+            {...register("latitude")}
+            className="form-control"
+            placeholder="Enter Latitude"
+            required
+          />
+          <input
+            {...register("longitude")}
+            className="form-control"
+            placeholder="Enter Longitude"
+            required
+          />
+          <h3>Destination Address</h3>
+          <input
+            {...register("destination")}
+            className="form-control"
+            placeholder="Enter Destination"
+            required
+          />
+          <input
+            type="submit"
+            className={`btn btn-success`}
+            value="Find Ride"
+          />
+        </form>
+      ) : (
+        <div>
+          <div class="alert alert-success" role="alert">
+            Cab Booked Successfully
+          </div>
+          <h1>Driver Details</h1>
+          <div className="card">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">Name - {driver.name}</li>
+              <li className="list-group-item">Phone - {driver.phone}</li>
+              <li className="list-group-item">Email - {driver.email}</li>
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

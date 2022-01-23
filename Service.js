@@ -51,9 +51,40 @@ const toggleAvail = async (req, res) => {
     }
   );
 };
+const findDist = (location1, lcoation2) => {
+  return Math.sqrt(
+    Math.pow(location1.latitude - lcoation2.latitude, 2) +
+      Math.pow(location1.longitude - lcoation2.longitude, 2)
+  );
+};
 
 const findRides = async (req, res) => {
-  console.log("Find Rides", req.body);
+  console.log("Find Rides", req.body.currentLocation);
+  users.find(
+    { mode: "Driver", available: true },
+    { passWord: 0 },
+    (err, doc) => {
+      let distance = undefined;
+      let cabId;
+      doc.map((x, i) => {
+        console.log(x.currentLocation);
+        let tempDist = findDist(req.body.currentLocation, x.currentLocation);
+        console.log(tempDist);
+        if (tempDist < distance || distance == undefined) {
+          distance = tempDist;
+          cabId = i;
+        }
+      });
+      if (distance < process.env.thresholdDistance) {
+        res.send({
+          MSG: `Cab assigned Successfully at ${distance} away`,
+          userDetails: doc[cabId],
+        });
+      } else {
+        res.status(404).send({ MSG: "No Cabs nearby" });
+      }
+    }
+  );
 };
 
 module.exports = { signup, login, toggleAvail, findRides };
