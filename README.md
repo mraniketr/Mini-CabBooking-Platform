@@ -16,6 +16,11 @@ Frontend Steps
 1. run `npm install` inside client folder to for frontend packages
 1. run `npm start` to run the frontend app
 
+Customisation options (.env)
+
+1. ThresholdLimit
+1. Custom MongoDB atlas url
+
 # App Steps
 
 1. Visit `http://localhost:3000/signUp` to create a rider and driver account( as many).
