@@ -6,14 +6,18 @@ export default function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data) => {
+    console.log(data);
     const res = await fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
     const datares = await res.json();
+    console.log(datares.userDetails[0]);
     if (res.ok) {
-      navigate(`/${datares.userDetails[0].mode}`);
+      navigate(`/${datares.userDetails[0].mode}`, {
+        state: { userData: datares.userDetails[0] },
+      });
     }
   };
 

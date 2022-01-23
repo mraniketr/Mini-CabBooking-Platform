@@ -9,8 +9,12 @@ app.use(express.json());
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+// Auth ENdpoints
 app.post("/signUp", Service.signup);
 app.post("/login", Service.login);
+
+// Driver Endpoints
+app.put("/toggleAvailability", Service.toggleAvail);
 
 app.get("/SERVERTESTAPI", (req, res) => {
   res.send({ express: "SERVER RUNNING" });

@@ -8,6 +8,7 @@ const signup = async (req, res) => {
   user.passWord = req.body.passWord;
   user.mode = req.body.mode;
   user.phone = req.body.phone;
+  user.name = req.body.name;
   if (user.mode === "Driver") {
     user.available = false;
   }
@@ -33,4 +34,19 @@ const login = async (req, res) => {
   });
 };
 
-module.exports = { signup, login };
+const toggleAvail = async (req, res) => {
+  console.log("Toggle Avail", req.body);
+
+  users.findOneAndUpdate(
+    { _id: req.body._id },
+    { available: req.body.newStatus },
+    (err, doc) => {
+      if (err) res.status(500).send({ MSG: "FAILED", err: err });
+      else {
+        res.send({ MSG: "SUCCESS", userDetails: doc });
+      }
+    }
+  );
+};
+
+module.exports = { signup, login, toggleAvail };

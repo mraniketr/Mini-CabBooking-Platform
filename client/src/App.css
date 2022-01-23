@@ -1,11 +1,13 @@
-.signUp {
+.signUp,
+.Driver {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
 }
 
-.signUp form {
+.signUp form,
+.Driver {
   display: flex;
   align-items: center;
   flex-direction: column;

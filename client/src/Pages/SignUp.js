@@ -22,6 +22,13 @@ export default function SignUp() {
       <h1>SIGNUP</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="form-group">
         <input
+          {...register("name")}
+          className="form-control"
+          placeholder="Enter Name"
+          type={"text"}
+          required
+        />
+        <input
           {...register("email")}
           className="form-control"
           placeholder="Enter email"
@@ -32,7 +39,7 @@ export default function SignUp() {
           {...register("phone")}
           className="form-control"
           placeholder="Enter Phone Number"
-          type={"number"}
+          type={"tel"}
           required
         />
         <input
