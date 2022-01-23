@@ -1,0 +1,24 @@
+{
+  "name": "Mini-CabBooking-Platform",
+  "version": "1.0.0",
+  "description": "Aniket Rai - Doosra Submission",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mraniketr/Mini-CabBooking-Platform.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mraniketr/Mini-CabBooking-Platform/issues"
+  },
+  "homepage": "https://github.com/mraniketr/Mini-CabBooking-Platform#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
