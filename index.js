@@ -18,6 +18,7 @@ app.put("/toggleAvailability", Service.toggleAvail);
 
 // User Endpoints
 app.post("/findRides", Service.findRides);
+app.post("/endRide", Service.endRide);
 app.get("/SERVERTESTAPI", (req, res) => {
   res.send({ express: "SERVER RUNNING" });
 });

@@ -8,25 +8,31 @@ export default function Rider() {
   const { state } = useLocation();
   const [ride, setRide] = useState(false);
   const [driver, setDriver] = useState({});
+  const [message, setMessage] = useState("");
   const getLocation = () => {
     if (!navigator.geolocation) {
-      setStatus("Geolocation is not supported by your browser");
+      setMessage("Geolocation is not supported by your browser");
     } else {
-      setStatus("Locating...");
+      setMessage("Locating...");
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setStatus(null);
+          setMessage("Live Location Found");
           setValue("latitude", position.coords.latitude);
           setValue("longitude", position.coords.longitude);
         },
         () => {
-          setStatus("Unable to retrieve your location");
+          setMessage("Unable to retrieve your location");
         }
       );
     }
   };
   useEffect(() => {
     getLocation();
+    if (state.userData.driverDetails) {
+      setRide(true);
+      setDriver(state.userData.driverDetails);
+      setMessage("Ride Already Active");
+    }
   }, []);
 
   const onSubmit = async (data) => {
@@ -34,6 +40,7 @@ export default function Rider() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        _id: state.userData._id,
         currentLocation: { latitude: data.latitude, longitude: data.longitude },
         destination: data.destination,
       }),
@@ -44,6 +51,24 @@ export default function Rider() {
       setRide(true);
       setDriver(resJSON.userDetails);
     }
+    setMessage(resJSON.MSG);
+  };
+
+  const handleEndRide = async () => {
+    const res = await fetch("/endRide", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        _id: state.userData._id,
+      }),
+    });
+
+    const resJSON = await res.json();
+    if (res.ok) {
+      setRide(false);
+      setDriver(null);
+    }
+    setMessage(resJSON.MSG);
   };
   return (
     <div className="Driver">
@@ -85,9 +110,6 @@ export default function Rider() {
         </form>
       ) : (
         <div>
-          <div class="alert alert-success" role="alert">
-            Cab Booked Successfully
-          </div>
           <h1>Driver Details</h1>
           <div className="card">
             <ul className="list-group list-group-flush">
@@ -96,8 +118,14 @@ export default function Rider() {
               <li className="list-group-item">Email - {driver.email}</li>
             </ul>
           </div>
+          <button type="button" class="btn btn-danger" onClick={handleEndRide}>
+            EndRide
+          </button>
         </div>
       )}
+      <div class="alert alert-primary" role="alert">
+        {message}
+      </div>
     </div>
   );
 }

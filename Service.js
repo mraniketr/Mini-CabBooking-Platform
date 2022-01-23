@@ -59,7 +59,7 @@ const findDist = (location1, lcoation2) => {
 };
 
 const findRides = async (req, res) => {
-  console.log("Find Rides", req.body.currentLocation);
+  console.log("Find Rides", req.body);
   users.find(
     { mode: "Driver", available: true },
     { passWord: 0 },
@@ -67,7 +67,7 @@ const findRides = async (req, res) => {
       let distance = undefined;
       let cabId;
       doc.map((x, i) => {
-        console.log(x.currentLocation);
+        console.log(x.name);
         let tempDist = findDist(req.body.currentLocation, x.currentLocation);
         console.log(tempDist);
         if (tempDist < distance || distance == undefined) {
@@ -76,6 +76,26 @@ const findRides = async (req, res) => {
         }
       });
       if (distance < process.env.thresholdDistance) {
+        users.findOneAndUpdate(
+          { _id: doc[cabId]._id },
+          { available: false },
+          (err, doc) => {
+            if (!err) {
+              console.log("Driver Details Updated");
+            }
+          }
+        );
+
+        users.findOneAndUpdate(
+          { _id: req.body._id },
+          { driverDetails: doc[cabId] },
+          (err, doc) => {
+            if (!err) {
+              console.log("Cab Details Updated");
+            }
+          }
+        );
+
         res.send({
           MSG: `Cab assigned Successfully at ${distance} away`,
           userDetails: doc[cabId],
@@ -87,4 +107,19 @@ const findRides = async (req, res) => {
   );
 };
 
-module.exports = { signup, login, toggleAvail, findRides };
+const endRide = async (req, res) => {
+  console.log("ENDRIDE", req.body);
+  users.findOneAndUpdate(
+    { _id: req.body._id },
+    { driverDetails: null },
+    (err, doc) => {
+      if (!err) {
+        res.send({ MSG: "Ride Ended Successfully" });
+      } else {
+        res.status(500).send({ MSG: "Server Issue" });
+      }
+    }
+  );
+};
+
+module.exports = { signup, login, toggleAvail, findRides, endRide };

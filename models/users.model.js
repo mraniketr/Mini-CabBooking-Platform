@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { object } = require("webidl-conversions");
 
 var usersSchema = new mongoose.Schema({
   name: {
@@ -28,6 +29,9 @@ var usersSchema = new mongoose.Schema({
     type: Boolean,
   },
   currentLocation: {
+    type: Object,
+  },
+  driverDetails: {
     type: Object,
   },
 });
