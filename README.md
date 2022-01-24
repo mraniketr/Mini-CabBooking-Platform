@@ -29,6 +29,10 @@ Customisation options (.env)
 1. Input fields can be used to alter them
 1. Click on find ride to get the nearest cab in the given range.
 
+# FlowChart
+
+![](/ScreenShots/FlowChart.png)
+
 # Screenshots
 
 ![](/ScreenShots/DriverSignup.jpg)
